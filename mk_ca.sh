@@ -6,6 +6,6 @@ mkdir -p ssl && cd "$_" || exit
 
 [ ! -f ca.crt ] && \
 openssl req -x509 -new -nodes -sha512 -days 36500 \
-  -subj "/C=CN/ST=Shanghai/L=Shanghai/O=iuxt/OU=iuxt/CN=张理坤" \
+  -subj "/C=CN/ST=Shanghai/L=Shanghai/O=iuxt/OU=iuxt/CN=zhanglikun" \
   -key ca.key \
   -out ca.crt
