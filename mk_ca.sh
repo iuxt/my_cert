@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mkdir -p ssl && cd "$_" || exit
+mkdir -p ca && cd "$_" || exit
 
 [ ! -f ca.key ] && openssl genrsa -out ca.key 4096
 
