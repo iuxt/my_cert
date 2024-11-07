@@ -54,3 +54,46 @@ server {
 }
 
 ```
+
+
+
+## 吊销证书
+如不需要，不用配置
+ 每天更新 CRL 文件
+
+```cron
+0 0 * * * openssl ca -config /path/to/openssl.cnf -gencrl -out /path/to/your/crl.pem && nginx -s reload
+```
+
+```conf
+server {
+    listen 443 ssl;
+    server_name example.com;
+
+    ssl_certificate /path/to/your/server.crt;
+    ssl_certificate_key /path/to/your/server.key;
+
+    # 配置 CA 证书，用于验证客户端证书的签发者
+    ssl_client_certificate /path/to/your/ca.crt;
+    ssl_verify_client on;  # 启用客户端证书验证
+
+    # 配置 CRL 文件路径，用于检查吊销的证书
+    ssl_crl /path/to/your/crl.pem;
+
+    # 其他 Nginx 配置
+    location / {
+        root /var/www/html;
+        index index.html;
+    }
+}
+```
+
+
+
+## 生成p12证书，给windows用
+
+```bash
+openssl pkcs12 -export -in zhangsan.crt -inkey zhangsan.key -out zhangsan.p12
+```
+
+p12 证书导入到证书管理器 个人 分类下
