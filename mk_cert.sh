@@ -2,10 +2,11 @@
 
 mkdir -p ssl && cd "$_" || exit
 
-openssl genrsa -out i.com.key 4096
+[ ! -f i.com.key ] && openssl genrsa -out i.com.key 4096
 
+[ ! -f i.com.csr ] && \
 openssl req -sha512 -new \
-    -subj "/C=CN/ST=Beijing/L=Beijing/O=example/OU=Personal/CN=i.com" \
+    -subj "/C=CN/ST=Shanghai/L=Shanghai/O=iuxt/OU=iuxt/CN=i.com" \
     -key i.com.key \
     -out i.com.csr
 
@@ -24,7 +25,7 @@ IP.2=10.0.0.30
 IP.3=10.0.0.3
 EOF
 
-
+[ ! -f i.com.crt ] && \
 openssl x509 -req -sha512 -days 3650 \
     -extfile v3.ext \
     -CA ca.crt -CAkey ca.key -CAcreateserial \
