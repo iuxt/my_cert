@@ -55,15 +55,25 @@ server {
 
 ```
 
+---
 
 
-## 吊销证书
+## 创建用户证书
+
+```bash
+./create_user_cert.sh zhangsan
+```
+
+## 配置证书吊销列表
+
 如不需要，不用配置
- 每天更新 CRL 文件
+每天更新 CRL 文件
 
 ```cron
 0 0 * * * openssl ca -config /path/to/openssl.cnf -gencrl -out /path/to/your/crl.pem && nginx -s reload
 ```
+
+Nginx配置
 
 ```conf
 server {
@@ -97,3 +107,12 @@ openssl pkcs12 -export -in zhangsan.crt -inkey zhangsan.key -out zhangsan.p12
 ```
 
 p12 证书导入到证书管理器 个人 分类下
+
+
+## 吊销证书
+
+```bash
+./revoke.sh zhangsan
+```
+
+吊销完成后，需要把 ca/crl.pem 更新到nginx上并reload nginx才能生效。
