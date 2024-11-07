@@ -1,3 +1,15 @@
+## 这是什么
+
+这是一个小工具，可以生成自签名的证书，并在浏览器或程序中使用，纯`shell`脚本，调用`openssl`签发。
+
+## 效果
+
+![](https://static.zahui.fan/images/202411071641322.png)
+
+![](https://static.zahui.fan/images/202411071641461.png)
+
+![](https://static.zahui.fan/images/202411071641156.png)
+
 
 ## 首先制作CA证书
 
