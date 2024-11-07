@@ -13,13 +13,13 @@
 
 ## 首先制作CA证书
 
-CA证书直接执行`mk_ca.sh`即可，会在`ssl`目录中生成 `ca.crt`(证书) `ca.key`(私钥) `ca.srl` 这几个文件，其中自己的操作系统需要信任`ca.crt`证书文件。
+CA证书直接执行`./mk_ca.sh`即可，会在`ssl`目录中生成 `ca.crt`(证书) `ca.key`(私钥) `ca.srl` 这几个文件，其中自己的操作系统需要信任`ca.crt`证书文件。
 
 ## 制作证书
 
 修改 `.env` 文件，将域名、ip修改成自己需要的。
 
-制作证书，修改`mk_cert.sh`脚本中的`v3.ext`关联的域名、ip等
+执行 `./mk_cert.sh` 生成证书。
 
 ## 信任CA证书
 
@@ -31,7 +31,7 @@ CA证书直接执行`mk_ca.sh`即可，会在`ssl`目录中生成 `ca.crt`(证�
 
 ### Nginx
 
-Nginx配置证书，只需要把 证书.key 和 证书.crt 配置到Nginx中即可。
+Nginx配置证书，只需要把 `证书.key` 和 `证书.crt` 配置到Nginx中即可。
 
 ```conf
 server {
@@ -62,18 +62,12 @@ server {
 
 ```bash
 ./create_user_cert.sh zhangsan
+
+# 将证书和私钥转换成p12格式，给windows用。p12 证书导入到证书管理器 个人 分类下
+openssl pkcs12 -export -in zhangsan.crt -inkey zhangsan.key -out zhangsan.p12
 ```
 
 ## 配置证书吊销列表
-
-如不需要，不用配置
-每天更新 CRL 文件
-
-```cron
-0 0 * * * openssl ca -config /path/to/openssl.cnf -gencrl -out /path/to/your/crl.pem && nginx -s reload
-```
-
-Nginx配置
 
 ```conf
 server {
@@ -83,30 +77,16 @@ server {
     ssl_certificate /path/to/your/server.crt;
     ssl_certificate_key /path/to/your/server.key;
 
-    # 配置 CA 证书，用于验证客户端证书的签发者
-    ssl_client_certificate /path/to/your/ca.crt;
-    ssl_verify_client on;  # 启用客户端证书验证
+    ssl_client_certificate /path/to/your/ca.crt;        # 配置 CA 证书，用于验证客户端证书的签发者
+    ssl_verify_client on;                               # 启用客户端证书验证
+    ssl_crl /path/to/your/crl.pem;                      # 配置 CRL 文件路径，用于检查吊销的证书
 
-    # 配置 CRL 文件路径，用于检查吊销的证书
-    ssl_crl /path/to/your/crl.pem;
-
-    # 其他 Nginx 配置
     location / {
         root /var/www/html;
         index index.html;
     }
 }
 ```
-
-
-
-## 生成p12证书，给windows用
-
-```bash
-openssl pkcs12 -export -in zhangsan.crt -inkey zhangsan.key -out zhangsan.p12
-```
-
-p12 证书导入到证书管理器 个人 分类下
 
 
 ## 吊销证书
