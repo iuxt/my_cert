@@ -5,6 +5,9 @@ default_ca = CA_default
 # 根目录设置为自定义路径
 dir = ./ca
 
+# 默认算法
+default_md = sha256
+
 # CA 的数据库文件
 database = $dir/index.txt
 # 证书的序列号文件
