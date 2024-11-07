@@ -25,3 +25,30 @@ CA证书直接执行`mk_ca.sh`即可，会在`ssl`目录中生成 `ca.crt`(证�
 参考: [制作和使用自签名证书](https://zahui.fan/posts/097e5b7c/) 里面的 **配置客户端信任 CA 证书** 章节
 
 
+## 配置证书
+
+### Nginx
+
+Nginx配置证书，只需要把 证书.key 和 证书.crt 配置到Nginx中即可。
+
+```conf
+server {
+        listen 443 ssl;
+        server_name localhost;
+        ssl_certificate ssl/server.crt;         # 配置证书位置
+        ssl_certificate_key ssl/server.key;     # 配置秘钥位置
+        ssl_client_certificate ssl/ca.crt;
+        ssl_verify_client on;
+        ssl_crl ssl/ca.crl;
+        ssl_session_timeout 5m;
+        ssl_protocols SSLv2 SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+        ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
+        ssl_prefer_server_ciphers on;
+        root html;
+        index index.html;
+        location / {
+                try_files $uri $uri/ =404;
+        }
+}
+
+```
