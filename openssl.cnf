@@ -1,7 +1,40 @@
 [ ca ]
 default_ca = CA_default
+
 [ CA_default ]
 x509_extensions = usr_cert
+# 根目录设置为自定义路径
+dir = ./ca
+# 默认算法
+default_md = sha256
+# CA 的数据库文件
+database = $dir/index.txt
+# 证书的序列号文件
+serial = $dir/serial
+# 新证书的默认有效期
+default_days = 365
+# 吊销证书的理由
+crl_reason = unspecified
+# 默认的证书颁发策略
+policy = policy_anything
+# CRL 选项
+crlnumber = $dir/crlnumber
+default_crl_days = 30
+crl_extensions = crl_ext
+
+[ policy_anything ]
+# 配置任何策略
+countryName = optional
+stateOrProvinceName = optional
+organizationName = optional
+organizationalUnitName = optional
+commonName = supplied
+emailAddress = optional
+
+[ crl_ext ]
+# CRL 的扩展配置
+authorityKeyIdentifier = keyid:always
+
 [ req ]
 default_bits        = 2048
 default_md          = sha256
@@ -10,14 +43,19 @@ distinguished_name  = req_distinguished_name
 attributes          = req_attributes
 x509_extensions     = v3_ca
 string_mask         = utf8only
+
 [ req_distinguished_name ]
+
 [ req_attributes ]
+
 [ usr_cert ]
 basicConstraints       = CA:FALSE
 nsComment              = "OpenSSL Generated Certificate"
 subjectKeyIdentifier   = hash
 authorityKeyIdentifier = keyid,issuer
+
 [ v3_ca ]
 subjectKeyIdentifier   = hash
 authorityKeyIdentifier = keyid:always,issuer
 basicConstraints       = CA:true
+

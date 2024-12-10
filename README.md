@@ -13,13 +13,11 @@
 
 ## 首先制作CA证书
 
-CA证书直接执行`./mk_ca.sh`即可，会在`ssl`目录中生成 `ca.crt`(证书) `ca.key`(私钥) `ca.srl` 这几个文件，其中自己的操作系统需要信任`ca.crt`证书文件。
+CA证书直接执行`./mk_ca.sh`即可，会在`ca`目录中生成 `ca.crt`(证书) `ca.key`(私钥) `ca.srl` 这几个文件，其中自己的操作系统需要信任`ca.crt`证书文件。
 
 ## 制作证书
 
-修改 `.env` 文件，将域名、ip修改成自己需要的。
-
-执行 `./mk_cert.sh` 生成证书。
+执行 `./mk_cert.sh test.i.com` (将test.i.com换成你想要的域名)生成证书。
 
 ## 信任CA证书
 
@@ -39,13 +37,12 @@ server {
         server_name localhost;
         ssl_certificate ssl/server.crt;         # 配置证书位置
         ssl_certificate_key ssl/server.key;     # 配置秘钥位置
-        ssl_client_certificate ssl/ca.crt;
-        ssl_verify_client on;
-        ssl_crl ssl/ca.crl;
-        ssl_session_timeout 5m;
-        ssl_protocols SSLv2 SSLv3 TLSv1 TLSv1.1 TLSv1.2;
-        ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
+
+        ssl_session_cache shared:SSL:1m;
+        ssl_session_timeout  10m;
+        ssl_ciphers PROFILE=SYSTEM;
         ssl_prefer_server_ciphers on;
+
         root html;
         index index.html;
         location / {
@@ -61,7 +58,7 @@ server {
 ## 创建用户证书
 
 ```bash
-./create_user_cert.sh zhangsan
+./mk_cert.sh zhangsan
 
 # 将证书和私钥转换成p12格式，给windows用。p12 证书导入到证书管理器 个人 分类下
 openssl pkcs12 -export -in zhangsan.crt -inkey zhangsan.key -out zhangsan.p12
