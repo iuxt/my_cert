@@ -1,8 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-source .env
-
 mkdir -p ssl
 
 if [ ! -f ca/ca.crt ]; then
@@ -15,27 +13,16 @@ fi
 [ ! -f "ssl/${HOST}".csr ] && \
 openssl req -sha512 -new \
     -subj "/C=CN/ST=Shanghai/L=Shanghai/O=iuxt/OU=iuxt/CN=${HOST}" \
+    -reqexts SAN \
+    -config <(cat openssl.cnf <(printf "\n[SAN]\nsubjectAltName=DNS:localhost,IP:127.0.0.1,DNS:${HOST}")) \
     -key "ssl/${HOST}".key \
     -out "ssl/${HOST}".csr
 
-
-cat > ssl/v3.ext <<-EOF
-keyUsage = nonRepudiation, digitalSignature, keyEncipherment
-extendedKeyUsage = serverAuth, clientAuth
-subjectAltName=@SubjectAlternativeName
-
-[ SubjectAlternativeName ]
-DNS.1=${HOST}
-DNS.2=*.${HOST}
-DNS.3=localhost
-IP.1=${IP_1}
-IP.2=${IP_2}
-IP.3=${IP_3}
-EOF
 
 [ ! -f "ssl/${HOST}".crt ] && \
 openssl x509 -req -sha512 -days 3650 \
     -extfile ssl/v3.ext \
     -CA ca/ca.crt -CAkey ca/ca.key -CAcreateserial \
+    -extfile <(printf "subjectAltName=DNS:localhost,IP:127.0.0.1,DNS:${HOST}") \
     -in "ssl/${HOST}".csr \
     -out "ssl/${HOST}".crt
