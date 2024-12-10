@@ -31,7 +31,7 @@ fi
 
 
 # crl.pem 吊销证书生成
-if [ ! -f crl.pem ];then
-    openssl ca -config openssl.cnf  -cert ca/ca.crt  -keyfile  ca/ca.key  -gencrl -out ca/crl.pem
+cd ..
+if [ ! -f ca/crl.pem ];then
+    openssl ca -config openssl.cnf -cert ca/ca.crt -keyfile ca/ca.key -gencrl -out ca/crl.pem
 fi
-
