@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 set -euo pipefail
 
+cd $(dirname $0) || exit
 
 # 吊销指定证书
 openssl ca  -config openssl.cnf -cert ca/ca.crt  -keyfile  ca/ca.key  -revoke ssl/"$1".crt 

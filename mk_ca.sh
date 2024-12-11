@@ -1,6 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
-mkdir -p ca && cd "$_" || exit
+cd $(dirname $0) || exit
+mkdir ca
+cd ca || exit
 
 
 # 创建私钥

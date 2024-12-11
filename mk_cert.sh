@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 set -euo pipefail
 
-mkdir -p ssl
+cd $(dirname $0) || exit
+mkdir ssl
 
 if [ ! -f ca/ca.crt ]; then
     echo "请先生成CA证书"

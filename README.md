@@ -93,3 +93,20 @@ server {
 ```
 
 吊销完成后，需要把 ca/crl.pem 更新到nginx上并reload nginx才能生效。
+
+
+
+## 使用Docker
+
+如果你本地没有openssl或者版本兼容问题，可以直接使用我制作好的Docker版工具：
+
+```bash
+# 生成CA
+docker run --rm -v ./:/certs/ iuxt/my_cert:latest ./mk_ca.sh
+
+# 生成证书
+docker run --rm -v ./:/certs/ iuxt/my_cert:latest ./mk_cert.sh test.example.com
+
+# 吊销证书
+# docker run --rm -v ./:/certs/ iuxt/my_cert:latest ./revoke.sh test.example.com
+```
