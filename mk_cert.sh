@@ -23,8 +23,8 @@ openssl req -sha512 -new \
 
 [ ! -f "ssl/${1}".crt ] && \
 openssl x509 -req -sha512 -days 3650 \
-    -extfile ssl/v3.ext \
     -CA ca/ca.crt -CAkey ca/ca.key -CAcreateserial \
     -extfile <(printf "subjectAltName=DNS:localhost,IP:127.0.0.1,DNS:${1},DNS:*.${1}") \
     -in "ssl/${1}".csr \
     -out "ssl/${1}".crt
+
