@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+
 set -euo pipefail
 
 cd $(dirname $0) || exit
@@ -15,7 +16,7 @@ fi
 openssl req -sha512 -new \
     -subj "/C=CN/ST=Shanghai/L=Shanghai/O=iuxt/OU=iuxt/CN=${1}" \
     -reqexts SAN \
-    -config <(cat openssl.cnf <(printf "\n[SAN]\nsubjectAltName=DNS:localhost,IP:127.0.0.1,DNS:${1}")) \
+    -config <(cat openssl.cnf <(printf "\n[SAN]\nsubjectAltName=DNS:localhost,IP:127.0.0.1,DNS:${1},DNS:*.${1}")) \
     -key "ssl/${1}".key \
     -out "ssl/${1}".csr
 
@@ -24,6 +25,6 @@ openssl req -sha512 -new \
 openssl x509 -req -sha512 -days 3650 \
     -extfile ssl/v3.ext \
     -CA ca/ca.crt -CAkey ca/ca.key -CAcreateserial \
-    -extfile <(printf "subjectAltName=DNS:localhost,IP:127.0.0.1,DNS:${1}") \
+    -extfile <(printf "subjectAltName=DNS:localhost,IP:127.0.0.1,DNS:${1},DNS:*.${1}") \
     -in "ssl/${1}".csr \
     -out "ssl/${1}".crt

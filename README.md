@@ -102,11 +102,11 @@ server {
 
 ```bash
 # 生成CA
-docker run --rm -v ./:/certs/ iuxt/my_cert:latest ./mk_ca.sh
+docker run --rm -v ./:/certs/ iuxt/my_cert:latest sh ./mk_ca.sh
 
 # 生成证书
-docker run --rm -v ./:/certs/ iuxt/my_cert:latest ./mk_cert.sh test.example.com
+docker run --rm -v ./:/certs/ iuxt/my_cert:latest sh ./mk_cert.sh test.example.com
 
 # 吊销证书
-# docker run --rm -v ./:/certs/ iuxt/my_cert:latest ./revoke.sh test.example.com
+# docker run --rm -v ./:/certs/ iuxt/my_cert:latest sh ./revoke.sh test.example.com
 ```
