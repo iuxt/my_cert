@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -euo pipefail
-
 cd $(dirname $0) || exit
 mkdir ssl
 
@@ -28,3 +26,5 @@ openssl x509 -req -sha512 -days 3650 \
     -in "ssl/${1}".csr \
     -out "ssl/${1}".crt
 
+
+[ ! -f "ssl/${1}".p12 ] && openssl pkcs12 -export -in "ssl/${1}".crt -inkey "ssl/${1}".key -out "ssl/${1}".p12
