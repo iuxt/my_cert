@@ -94,7 +94,15 @@ server {
 
 吊销完成后，需要把 ca/crl.pem 更新到nginx上并reload nginx才能生效。
 
+## 定期更新crl
 
+吊销列表有默认有效期的，就算你的CA签了100年，证书签了10年，吊销证书到期没有更新，服务器也会拒绝客户端访问的。所以需要在crontab增加一个定期更新crl的任务。
+
+```bash
+0 1 * * * /root/my_cert/update_crl.sh >> /root/update_crl.log 2>&1
+```
+
+或者你也可以在 `openssl.cnf` 配置文件中，把 `default_crl_days` 给设置大一点。
 
 ## 使用Docker
 
