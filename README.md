@@ -4,11 +4,11 @@
 
 ## 效果
 
-![](https://static.zahui.fan/images/202411071641322.png)
+![](https://s3.babudiu.com/iuxt/images/202411071641322.png)
 
-![](https://static.zahui.fan/images/202411071641461.png)
+![](https://s3.babudiu.com/iuxt/images/202411071641461.png)
 
-![](https://static.zahui.fan/images/202411071641156.png)
+![](https://s3.babudiu.com/iuxt/images/202411071641156.png)
 
 ## 首先制作CA证书
 
