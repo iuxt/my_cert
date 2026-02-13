@@ -9,4 +9,4 @@ openssl ca -config openssl.cnf  -cert ca/ca.crt  -keyfile  ca/ca.key  -gencrl -o
 
 # 更新nginx配置
 cp ca/crl.pem ../nebula/nginx/ssl/crl.pem
-../nebula/nginx/reload.sh
+../nebula/nginx/reload.py
