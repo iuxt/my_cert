@@ -12,7 +12,7 @@ fi
 
 [ ! -f "ssl/${1}".csr ] && \
 openssl req -sha512 -new \
-    -subj "/C=CN/ST=Shanghai/L=Shanghai/O=iuxt/OU=iuxt/CN=${1}" \
+    -subj "/CN=${1}" \
     -reqexts SAN \
     -config <(cat openssl.cnf <(printf "\n[SAN]\nsubjectAltName=DNS:localhost,IP:127.0.0.1,DNS:${1},DNS:*.${1}")) \
     -key "ssl/${1}".key \

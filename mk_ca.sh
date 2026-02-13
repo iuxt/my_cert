@@ -16,7 +16,7 @@ fi
 # 创建证书
 if [ ! -f ca.crt ]; then
     openssl req -x509 -new -nodes -sha512 -days 36500 \
-    -subj "/C=CN/ST=Shanghai/L=Shanghai/O=iuxt/OU=iuxt/CN=zhanglikun" \
+    -subj "/CN=iuxt Root CA" \
     -key ca.key \
     -out ca.crt
 else
