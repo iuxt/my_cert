@@ -8,7 +8,7 @@ if [ ! -f ca/ca.crt ]; then
     exit 0
 fi
 
-[ ! -f "ssl/${1}".key ] && openssl genrsa -out "ssl/${1}".key 4096
+[ ! -f "ssl/${1}".key ] && openssl ecparam -genkey -name prime256v1 -out "ssl/${1}".key
 
 [ ! -f "ssl/${1}".csr ] && \
 openssl req -sha512 -new \

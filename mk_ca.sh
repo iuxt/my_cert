@@ -7,7 +7,7 @@ cd ca || exit
 
 # 创建私钥
 if [ ! -f ca.key ]; then
-    openssl genrsa -out ca.key 4096
+    openssl ecparam -genkey -name prime256v1 -out ca.key
 else
     echo "ca.key 已存在"
 fi
