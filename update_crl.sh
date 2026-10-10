@@ -1,12 +1,23 @@
-#!/bin/bash
+#!/bin/sh
 
-set -euo pipefail
+set -eu
+umask 077
+cd -- "$(dirname -- "$0")"
+. ./common.sh
 
-cd $(dirname $0) || exit
+secure_private_files
+[ -d ca ] || fail "请先生成 CA：./mk_ca.sh"
+init_work_dir ca
+require_ca
+generate_crl
 
-# 吊销完成后，重新生成吊销列表，建议定期重新生成 CRL 文件，并在 Nginx 上重新加载配置
-openssl ca -config openssl.cnf  -cert ca/ca.crt  -keyfile  ca/ca.key  -gencrl -out ca/crl.pem
-
-# 更新nginx配置
-cp ca/crl.pem ../nebula/nginx/ssl/crl.pem
-../nebula/nginx/reload.py
+# 默认只更新本地 CRL；传入目标路径及命令时才执行部署和 reload。
+if [ "$#" -gt 0 ]; then
+    destination=$1
+    shift
+    cp -- ca/crl.pem "$destination"
+    if [ "$#" -gt 0 ]; then
+        "$@"
+    fi
+fi
+printf 'CRL 已更新：ca/crl.pem\n'
