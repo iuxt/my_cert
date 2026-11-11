@@ -1,0 +1,4 @@
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+0 1 * * * /root/my_cert/update_crl.sh /root/nebula/nginx/ssl/ docker exec nginx nginx -s reload >> /root/my_cert/update_crl.log 2>&1

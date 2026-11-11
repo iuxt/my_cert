@@ -20,4 +20,7 @@ if [ "$#" -gt 0 ]; then
         "$@"
     fi
 fi
+
+openssl crl -in ca/crl.pem -noout -lastupdate -nextupdate
 printf 'CRL 已更新：ca/crl.pem\n'
+
